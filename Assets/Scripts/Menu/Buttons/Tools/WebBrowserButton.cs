@@ -1,5 +1,8 @@
 ﻿using CellexalVR.General;
 using CellexalVR.Interaction;
+using System.Diagnostics;
+using UnityEngine;
+
 namespace CellexalVR.Menu.Buttons.Tools
 {
     /// <summary>
@@ -26,7 +29,9 @@ namespace CellexalVR.Menu.Buttons.Tools
         public override void Click()
         {
             base.Click();
-            //referenceManager.MultiuserMessageSender.SendMessageActivateBrowser(toolActivated);
+            referenceManager.multiuserMessageSender.SendMessageActivateBrowser(toolActivated);
+            CellexalLog.Log("Web client should start now!");
+            //Debug.Log("Web client should start now!");
 
         }
 

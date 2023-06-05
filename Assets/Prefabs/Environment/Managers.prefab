@@ -46948,7 +46948,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1647800239781109860}
   - component: {fileID: 7837421266804358026}
-  - component: {fileID: 6792229130389848897}
   - component: {fileID: 1225616577345113668}
   m_Layer: 17
   m_Name: Description
@@ -47019,14 +47018,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!222 &6792229130389848897
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3500852975277676234}
-  m_CullTransparentMesh: 0
 --- !u!114 &1225616577345113668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48058,7 +48049,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8794829005548909763}
   - component: {fileID: 6853204975338188604}
-  - component: {fileID: 461028422028392471}
   - component: {fileID: 6063984865695728397}
   m_Layer: 17
   m_Name: Text (TMP)
@@ -48129,14 +48119,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!222 &461028422028392471
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4222877451542834828}
-  m_CullTransparentMesh: 0
 --- !u!114 &6063984865695728397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50652,7 +50634,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5466392709606400420}
   - component: {fileID: 1965518209393442043}
-  - component: {fileID: 4040013982321631826}
   - component: {fileID: 4700816923828724676}
   m_Layer: 17
   m_Name: Text (TMP)
@@ -50723,14 +50704,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!222 &4040013982321631826
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5920109384868310467}
-  m_CullTransparentMesh: 0
 --- !u!114 &4700816923828724676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54208,7 +54181,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6558776030250542415}
   - component: {fileID: 3837028218902781547}
-  - component: {fileID: 1341965949130334229}
   - component: {fileID: 5760983384516802616}
   m_Layer: 17
   m_Name: Text (TMP)
@@ -54279,14 +54251,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!222 &1341965949130334229
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7975311613678877682}
-  m_CullTransparentMesh: 0
 --- !u!114 &5760983384516802616
 MonoBehaviour:
   m_ObjectHideFlags: 0
