@@ -79,7 +79,7 @@ namespace CellexalVR.Interaction
                 c.enabled = visible;
             }
             isVisible = visible;
-            //webBrowser.enabled = visible;
+            webBrowser.enabled = visible;
         }
 
     }

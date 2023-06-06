@@ -125,6 +125,7 @@ MonoBehaviour:
   deleteTool: {fileID: 0}
   minimizeTool: {fileID: 0}
   drawTool: {fileID: 0}
+  webBrowser: {fileID: 0}
   screenshotCamera: {fileID: 0}
   teleportLaser: {fileID: 0}
   velocityPathTool: {fileID: 0}
@@ -190,6 +191,7 @@ MonoBehaviour:
   autoCompleteList: {fileID: 0}
   coloringOptionsList: {fileID: 0}
   folderKeyboard: {fileID: 0}
+  webBrowserKeyboard: {fileID: 0}
   sessionHistoryList: {fileID: 0}
   referenceModelKeyboard: {fileID: 0}
   filterBlockBoard: {fileID: 0}

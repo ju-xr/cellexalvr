@@ -30,6 +30,8 @@ namespace CellexalVR.Menu.Buttons.Tools
         {
             base.Click();
             referenceManager.multiuserMessageSender.SendMessageActivateBrowser(toolActivated);
+            referenceManager.webBrowser.GetComponent<WebManager>().SetBrowserActive(toolActivated);
+            referenceManager.webBrowser.GetComponent<WebManager>().SetVisible(toolActivated);
             CellexalLog.Log("Web client should start now!");
             //Debug.Log("Web client should start now!");
 
