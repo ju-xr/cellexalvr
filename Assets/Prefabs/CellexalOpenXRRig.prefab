@@ -6890,6 +6890,8 @@ MonoBehaviour:
   referenceManager: {fileID: 0}
   linePrefab: {fileID: 954246474024124320}
   materialPrefab: {fileID: 2100000, guid: 9eeb18f915d1d594ea89a9c088a125c1, type: 2}
+  maxPathLength: 20
+  collider: {fileID: 0}
 --- !u!120 &954246474024124320
 LineRenderer:
   m_ObjectHideFlags: 0

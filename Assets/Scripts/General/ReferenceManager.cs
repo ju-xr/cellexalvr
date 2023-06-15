@@ -50,7 +50,7 @@ namespace CellexalVR.General
         public MinimizeTool minimizeTool;
         //public GameObject helpMenu;
         public DrawTool drawTool;
-        //public GameObject webBrowser;
+        public GameObject webBrowser;
         public CaptureScreenshot screenshotCamera;
         public GameObject teleportLaser;
         public VelocityPathTool velocityPathTool;
@@ -141,7 +141,7 @@ namespace CellexalVR.General
         public AutoCompleteList autoCompleteList;
         public ColoringOptionsList coloringOptionsList;
         public KeyboardHandler folderKeyboard;
-        //public KeyboardHandler webBrowserKeyboard;
+        public KeyboardHandler webBrowserKeyboard;
         public SessionHistoryList sessionHistoryList;
         public ReferenceModelKeyboard referenceModelKeyboard;
 
@@ -198,7 +198,7 @@ namespace CellexalVR.General
             deleteTool = rightController.GetComponentInChildren<RemovalController>(true).gameObject;
             minimizeTool = rightController.GetComponentInChildren<MinimizeTool>(true);
             drawTool = rightController.GetComponentInChildren<DrawTool>(true);
-            //webBrowser = GameObject.Find("WebBrowser");
+            webBrowser = GameObject.Find("WebBrowser");
             screenshotCamera = GameObject.Find("SnapShotCam").GetComponent<CaptureScreenshot>();
             teleportLaser = leftController.gameObject;
             velocityPathTool = rightController.GetComponentInChildren<VelocityPathTool>(true);
@@ -266,7 +266,7 @@ namespace CellexalVR.General
             autoCompleteList = GameObject.Find("Keyboard Setup").GetComponent<AutoCompleteList>();
             coloringOptionsList = GameObject.Find("Keyboard Setup/Coloring Options List").GetComponent<ColoringOptionsList>();
             folderKeyboard = GameObject.Find("Tron_Loader/Folder Keyboard").GetComponent<KeyboardHandler>();
-            //webBrowserKeyboard = GameObject.Find("WebBrowser/Web Keyboard").GetComponent<KeyboardHandler>();
+            webBrowserKeyboard = GameObject.Find("WebBrowser/Web Keyboard").GetComponent<KeyboardHandler>();
             annotationManager = keyboardSwitch.GetComponent<AnnotationManager>();
             sessionHistoryList = geneKeyboard.GetComponentInChildren<SessionHistoryList>();
 

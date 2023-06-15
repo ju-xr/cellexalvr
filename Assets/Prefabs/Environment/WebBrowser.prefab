@@ -8860,7 +8860,6 @@ GameObject:
   - component: {fileID: 4432713410589314526}
   - component: {fileID: 4524734352299884740}
   - component: {fileID: 4535037770284002130}
-  - component: {fileID: 4436027130125399496}
   - component: {fileID: 4543321844635491464}
   m_Layer: 0
   m_Name: Description Text
@@ -8939,14 +8938,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4511916239245985780}
   m_Mesh: {fileID: 0}
---- !u!222 &4436027130125399496
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4511916239245985780}
-  m_CullTransparentMesh: 0
 --- !u!114 &4543321844635491464
 MonoBehaviour:
   m_ObjectHideFlags: 0
