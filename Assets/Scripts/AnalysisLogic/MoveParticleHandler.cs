@@ -15,7 +15,7 @@ public struct MovePointComponent : IComponentData
     public Vector3 currentPosition;
 }
 
-public class MoveParticleHandler : SystemBase
+public partial class MoveParticleHandler : SystemBase
 {
     private EndSimulationEntityCommandBufferSystem ecbSystem;
     private EntityCommandBuffer ecb;
@@ -24,7 +24,7 @@ public class MoveParticleHandler : SystemBase
     protected override void OnCreate()
     {
         base.OnCreate();
-        ecbSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+        ecbSystem = World.GetOrCreateSystemManaged<EndSimulationEntityCommandBufferSystem>();
     }
 
     protected override void OnUpdate()
@@ -35,7 +35,7 @@ public class MoveParticleHandler : SystemBase
         ecb = ecbSystem.CreateCommandBuffer();
         Entities.WithAll<MovePointComponent>().ForEach((Entity e, int entityInQueryIndex, ref MovePointComponent mp) =>
         {
-            mp.currentPosition = Vector3.MoveTowards(mp.currentPosition, mp.targetPosition, speed * Time.DeltaTime);
+            mp.currentPosition = Vector3.MoveTowards(mp.currentPosition, mp.targetPosition, speed * SystemAPI.Time.DeltaTime);
             positionMap.SetPixel(mp.xindex, mp.yindex, new Color(mp.currentPosition.x, mp.currentPosition.y, mp.currentPosition.z));
             //positionMap2.SetPixel(mp.xindex, mp.yindex, new Color(10, 10, 10));
             if (Vector3.Distance(mp.targetPosition, mp.currentPosition) < 0.01f)

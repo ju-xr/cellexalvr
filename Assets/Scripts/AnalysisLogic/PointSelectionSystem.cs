@@ -44,7 +44,7 @@ namespace CellexalVR.AnalysisLogic
     /// But this system also in the end uses ray casts to decide if the points are inside of the selection tool.
     /// Which points are to be checked <see cref="OctantSystem"/>
     /// </summary>
-    public class PointSelectionSystem : SystemBase
+    public partial class PointSelectionSystem : SystemBase
     {
         private int frameCount;
         private BeginSimulationEntityCommandBufferSystem ecbSystem;
@@ -53,7 +53,7 @@ namespace CellexalVR.AnalysisLogic
         protected override void OnCreate()
         {
             base.OnCreate();
-            ecbSystem = World.GetOrCreateSystem<BeginSimulationEntityCommandBufferSystem>();
+            ecbSystem = World.GetOrCreateSystemManaged<BeginSimulationEntityCommandBufferSystem>();
             entityArchetype = EntityManager.CreateArchetype(typeof(RaycastCheckComponent));
         }
 
@@ -147,7 +147,7 @@ namespace CellexalVR.AnalysisLogic
             float3 origin = SelectionToolCollider.instance.GetCurrentCollider().transform.position;
             // If a childSlice check quadrant map of parent slice;
             if (OctantSystem.quadrantMultiHashMaps[pc.pcID].TryGetFirstValue(hashMapKey, out OctantData quadrantData,
-                out NativeMultiHashMapIterator<int> nativeMultiHashMapIterator))
+                out NativeParallelMultiHashMapIterator<int> nativeMultiHashMapIterator))
             {
                 do
                 {

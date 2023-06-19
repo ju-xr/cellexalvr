@@ -21,7 +21,7 @@ namespace CellexalVR.Menu.Buttons.Slicing
 
         public override void Click()
         {
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<RaycastSystem>().move = !toggle;
+            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<RaycastSystem>().move = !toggle;
             var pc = PointCloudGenerator.instance.pointClouds[0];
             if (!toggle)
             {

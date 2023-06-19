@@ -83,7 +83,7 @@ namespace CellexalVR.Spatial
 
         private void Start()
         {
-            sliceGraphSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<SliceGraphSystem>();
+            sliceGraphSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<SliceGraphSystem>();
             pointCloud = GetComponentInParent<PointCloud>();
             graphSlice = GetComponentInParent<GraphSlice>();
             boxMaterial = box.GetComponent<MeshRenderer>().material;

@@ -275,7 +275,7 @@ namespace AnalysisLogic
                     targetPositions[ind] = c;
                     pos = p.offset;
                     wPos = math.transform(transform.localToWorldMatrix, pos);
-                    entityManager.SetComponentData(p.entity, new Translation { Value = wPos });
+                    entityManager.SetComponentData(p.entity, new LocalTransform { Position = wPos });
                     newP = new Point
                     {
                         selected = false,
@@ -340,7 +340,7 @@ namespace AnalysisLogic
 
                     Entity e = entityManager.Instantiate(PrefabEntities.prefabEntity);
                     float3 wPos = math.transform(transform.localToWorldMatrix, pos);
-                    entityManager.SetComponentData(e, new Translation { Value = wPos });
+                    entityManager.SetComponentData(e, new LocalTransform { Position = wPos });
                     entityManager.AddComponent(e, typeof(Point));
                     Point p = new Point
                     {
@@ -405,7 +405,7 @@ namespace AnalysisLogic
 
                     Entity e = entityManager.Instantiate(PrefabEntities.prefabEntity);
                     float3 wPos = math.transform(transform.localToWorldMatrix, pos);
-                    entityManager.SetComponentData(e, new Translation { Value = wPos });
+                    entityManager.SetComponentData(e, new LocalTransform { Position = wPos });
                     entityManager.AddComponent(e, typeof(Point));
                     Point p = new Point
                     {

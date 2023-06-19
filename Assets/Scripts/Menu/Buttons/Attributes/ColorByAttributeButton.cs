@@ -84,7 +84,7 @@ namespace CellexalVR.Menu.Buttons.Attributes
             else if (CurrentMode == Mode.BIG_FOLDER)
             {
                 ReferenceManager.instance.multiuserMessageSender.SendMessageColorByAttributePointCloud(Attribute, !colored);
-                World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<TextureHandler>().ColorCluster(Attribute, !colored);
+                World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TextureHandler>().ColorCluster(Attribute, !colored);
                 colored = !colored;
                 ToggleOutline(colored);
             }

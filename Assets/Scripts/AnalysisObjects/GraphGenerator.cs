@@ -14,7 +14,7 @@ using CellexalVR.Extensions;
 using CellexalVR.Spatial;
 using TMPro;
 using UnityEngine.Rendering;
-using CellexalVR.AnalysisLogic;
+//using CellexalVR.AnalysisLogic;
 
 namespace CellexalVR.AnalysisObjects
 {
