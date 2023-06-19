@@ -1,7 +1,9 @@
 ﻿using CellexalVR.General;
 using System.Linq;
+using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using Vuplex.WebView;
 
 namespace CellexalVR.Interaction
 {
@@ -10,6 +12,8 @@ namespace CellexalVR.Interaction
     /// </summary>
     public class WebManager : MonoBehaviour
     {
+        [Header("The prefab for all browser window instances")]
+        [SerializeField] GameObject browserWindowPrefab;
 
         public SimpleWebBrowser.WebBrowser webBrowser;
         public TMPro.TextMeshPro output;
@@ -31,9 +35,32 @@ namespace CellexalVR.Interaction
         // Use this for initialization
         void Start()
         {
+            // Use a desktop User-Agent to request the desktop versions of websites.
+            // https://developer.vuplex.com/webview/Web#SetUserAgent
+            Web.SetUserAgent(false);
+
             SetVisible(false);
             interactable = GetComponent<XRGrabInteractable>();
         }
+
+        /// <summary>
+        /// Creates a new browser window relative to the window creating it
+        /// </summary>
+        public GameObject CreateNewWindow(Transform browserTransform, string url)
+        {
+            Vector3 newPos = browserTransform.position;
+            newPos.z += 0.01f;
+            GameObject newWindow = Instantiate(browserWindowPrefab, newPos, browserTransform.rotation);
+
+            // set up the initial url to see if it works without loading
+            newWindow.GetNamedChild("CanvasMainWindow").GetComponent<CanvasWebViewPrefab>().InitialUrl = url;
+
+            // need to set the camera of the canvas object for this window
+            newWindow.GetComponent<Canvas>().worldCamera = Camera.main;
+
+            return newWindow;
+
+        } // end CreateNewWindow
 
         private void Update()
         {

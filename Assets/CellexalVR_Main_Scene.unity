@@ -5834,6 +5834,12 @@ PrefabInstance:
       propertyPath: referenceManager
       value: 
       objectReference: {fileID: 1319570383771400436}
+    - target: {fileID: 4543585208101607086, guid: 57fa6b1f2c578d8489bd1033a227c865,
+        type: 3}
+      propertyPath: browserWindowPrefab
+      value: 
+      objectReference: {fileID: 3412222623029700255, guid: 201d527a26da92242a2033640203a1c8,
+        type: 3}
     - target: {fileID: 4543589444031788630, guid: 57fa6b1f2c578d8489bd1033a227c865,
         type: 3}
       propertyPath: referenceManager
