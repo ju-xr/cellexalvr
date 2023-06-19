@@ -99,3 +99,13 @@ crashlytics-build.properties
 
 # Git specific Windows config
 /ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json
+
+# Vulpex 3DWeb View should not be pushed to the cloud
+Assets/Vuplex*
+#Assets/Plugins*
+
+# Temp files should not be stored as well
+.vscode
+*.thumb
+*.DS_Store
+Thumbs.db
