@@ -16,7 +16,7 @@ namespace CellexalVR.AnalysisLogic
     /// All the logic happends inside the <see cref="OnUpdate"/> function.
     /// </summary>
     [UpdateInGroup(typeof(SimulationSystemGroup))]
-    public class RaycastSystem : SystemBase
+    public partial class RaycastSystem : SystemBase
     {
         public bool move;
 
@@ -28,7 +28,7 @@ namespace CellexalVR.AnalysisLogic
         protected override void OnCreate()
         {
             base.OnCreate();
-            ecbSystem = World.GetOrCreateSystem<BeginSimulationEntityCommandBufferSystem>();
+            ecbSystem = World.GetOrCreateSystemManaged<BeginSimulationEntityCommandBufferSystem>();
             query = GetEntityQuery(typeof(RaycastCheckComponent));
             selectEntityArchetype = EntityManager.CreateArchetype(typeof(SelectedPointComponent));
             moveEntityArchetype = EntityManager.CreateArchetype(typeof(MovePointComponent));

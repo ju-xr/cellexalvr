@@ -20,7 +20,7 @@ namespace CellexalVR.AnalysisLogic
     /// Each point cloud has a reference to a color map where each pixel in the texture is linked to a point.
     /// This is handled via the visual effects graph.
     /// </summary>
-    public class TextureHandler : SystemBase
+    public partial class TextureHandler : SystemBase
     {
         public Dictionary<int, int> sps;
         public List<Texture2D> colorTextureMaps = new List<Texture2D>();

@@ -15,7 +15,7 @@ namespace CellexalVR.Menu.Buttons.Slicing
         {
             base.Awake();
             SetButtonActivated(false);
-            slicer = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<SliceGraphSystem>();//GetComponentInParent<Slicer>();
+            slicer = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<SliceGraphSystem>();//GetComponentInParent<Slicer>();
         }
         
         protected override void ActionsAfterSliding()

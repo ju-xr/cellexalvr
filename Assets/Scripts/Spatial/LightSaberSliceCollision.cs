@@ -98,7 +98,7 @@ namespace CellexalVR.Spatial
             float3 saberInPCLocalPos = pcToSlice.transform.InverseTransformPoint(transform.position);
             int hashMapKey = OctantSystem.GetPositionHashMapKey(saberInPCLocalPos);
             if (OctantSystem.quadrantMultiHashMaps[pcToSlice.pcID].TryGetFirstValue(hashMapKey, out OctantData quadrantData,
-                out NativeMultiHashMapIterator<int> nativeMultiHashMapIterator))
+                out NativeParallelMultiHashMapIterator<int> nativeMultiHashMapIterator))
             {
                 do
                 {
@@ -122,7 +122,7 @@ namespace CellexalVR.Spatial
             if (pcToSlice == null) return;
             Plane plane = new Plane(spheres[0].transform.position, spheres[2].transform.position, spheres[3].transform.position);
             spheres[4].transform.position = (enterPosition + exitPosition) / 2f;
-            World.DefaultGameObjectInjectionWorld.GetExistingSystem<SliceGraphSystem>().Slice(pcToSlice.pcID, plane.normal, spheres[4].transform.position);
+            World.DefaultGameObjectInjectionWorld.GetExistingSystemManaged<SliceGraphSystem>().Slice(pcToSlice.pcID, plane.normal, spheres[4].transform.position);
             planeMesh.gameObject.SetActive(false);
         }
 

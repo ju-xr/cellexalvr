@@ -81,7 +81,7 @@ namespace CellexalVR.AnalysisLogic
         {
             instance = this;
             entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-            quadrantSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<OctantSystem>();
+            quadrantSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<OctantSystem>();
             CreateParentArchetype();
             CellexalEvents.GraphsUnloaded.AddListener(Reset);
         }
@@ -288,9 +288,10 @@ namespace CellexalVR.AnalysisLogic
             entityArchetype = entityManager.CreateArchetype(
                 typeof(LocalToWorld),
                 typeof(LinkedEntityGroup),
-                typeof(Translation),
-                typeof(Rotation),
-                typeof(Scale),
+                typeof(LocalTransform),
+                //typeof(Translation),
+                //typeof(Rotation),
+                //typeof(Scale),
                 typeof(PointCloudComponent)
             );
         }
@@ -307,9 +308,11 @@ namespace CellexalVR.AnalysisLogic
             creatingGraph = false;
             pc.GetComponent<GraphSlice>().parentSlice = parentPC.GetComponent<GraphSlice>();
             Entity parent = entityManager.CreateEntity(entityArchetype);
-            entityManager.SetComponentData(parent, new Translation { Value = new float3(0, 0, 0) });
-            entityManager.SetComponentData(parent, new Rotation { Value = new quaternion(0, 0, 0, 0) });
-            entityManager.SetComponentData(parent, new Scale { Value = 1f });
+            entityManager.SetComponentData(parent, LocalTransform.Identity);
+                //LocalTransform.FromPositionRotationScale(new float3(0, 0, 0), new quaternion(0, 0, 0, 0), 1f));
+            //entityManager.SetComponentData(parent, new Translation { Value = new float3(0, 0, 0) });
+            //entityManager.SetComponentData(parent, new Rotation { Value = new quaternion(0, 0, 0, 0) });
+            //entityManager.SetComponentData(parent, new Scale { Value = 1f });
             PointCloudComponent pointCloudComponent = new PointCloudComponent { pointCloudId = graphNr };
             entityManager.SetComponentData(parent, pointCloudComponent);
             ScaleAllCoordinates();
@@ -327,9 +330,10 @@ namespace CellexalVR.AnalysisLogic
         public void SpawnPoints(PointCloud pc)
         {
             Entity parent = entityManager.CreateEntity(entityArchetype);
-            entityManager.SetComponentData(parent, new Translation { Value = new float3(0, 0, 0) });
-            entityManager.SetComponentData(parent, new Rotation { Value = new quaternion(0, 0, 0, 0) });
-            entityManager.SetComponentData(parent, new Scale { Value = 1f });
+            entityManager.SetComponentData(parent, LocalTransform.Identity);
+            //entityManager.SetComponentData(parent, new Translation { Value = new float3(0, 0, 0) });
+            //entityManager.SetComponentData(parent, new Rotation { Value = new quaternion(0, 0, 0, 0) });
+            //entityManager.SetComponentData(parent, new Scale { Value = 1f });
             PointCloudComponent pointCloudComponent = new PointCloudComponent { pointCloudId = graphNr };
             entityManager.SetComponentData(parent, pointCloudComponent);
             instance.creatingGraph = true;
@@ -396,9 +400,10 @@ namespace CellexalVR.AnalysisLogic
         {
             PointCloud pc = hi.GetComponent<PointCloud>();
             Entity parent = entityManager.CreateEntity(entityArchetype);
-            entityManager.SetComponentData(parent, new Translation { Value = new float3(0, 0, 0) });
-            entityManager.SetComponentData(parent, new Rotation { Value = new quaternion(0, 0, 0, 0) });
-            entityManager.SetComponentData(parent, new Scale { Value = 1f });
+            entityManager.SetComponentData(parent, LocalTransform.Identity);
+            //entityManager.SetComponentData(parent, new Translation { Value = new float3(0, 0, 0) });
+            //entityManager.SetComponentData(parent, new Rotation { Value = new quaternion(0, 0, 0, 0) });
+            //entityManager.SetComponentData(parent, new Scale { Value = 1f });
             LocalToWorld localToWorld = entityManager.GetComponentData<LocalToWorld>(parent);
             PointCloudComponent pointCloudComponent = new PointCloudComponent { pointCloudId = graphNr };
             entityManager.SetComponentData(parent, pointCloudComponent);
@@ -493,7 +498,7 @@ namespace CellexalVR.AnalysisLogic
             VisualEffect vfx = pc.GetComponentInChildren<VisualEffect>();
             vfx.SetTexture("ColorMapTex", colorMap);
             vfx.SetTexture("AlphaMapTex", alphaMap);
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<OctantSystem>().SetHashMap(pc.pcID);
+            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<OctantSystem>().SetHashMap(pc.pcID);
             TextureHandler.instance.colorTextureMaps.Add(colorMap);
             TextureHandler.instance.alphaTextureMaps.Add(alphaMap);
             vfx.enabled = true;
@@ -546,7 +551,7 @@ namespace CellexalVR.AnalysisLogic
             VisualEffect vfx = pc.GetComponent<VisualEffect>();
             vfx.SetTexture("ColorMapTex", colorMap);
             vfx.SetTexture("AlphaMapTex", alphaMap);
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<OctantSystem>().SetHashMap(pc.pcID);
+            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<OctantSystem>().SetHashMap(pc.pcID);
             TextureHandler.instance.colorTextureMaps.Add(colorMap);
             TextureHandler.instance.alphaTextureMaps.Add(alphaMap);
             vfx.enabled = true;
@@ -614,7 +619,7 @@ namespace CellexalVR.AnalysisLogic
                 vfx.enabled = true;
                 vfx.Stop();
                 vfx.Play();
-                World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<OctantSystem>().SetHashMap(pc.pcID);
+                World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<OctantSystem>().SetHashMap(pc.pcID);
             }
 
             TextureHandler.instance.colorTextureMaps.Add(colorMap);
