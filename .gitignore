@@ -13,6 +13,9 @@
 /Config/
 /Assets/Prefabs/Keyboards/KeyboardMeshes/
 
+# Simple Browser log file - may need to ignore all log-file.txt in the future
+/Assets/SimpleWebBrowser/PluginServer/x64/log-file.txt
+
 Doxyfile
 Documentation.xml
 html.zip
