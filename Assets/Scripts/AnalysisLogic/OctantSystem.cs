@@ -32,12 +32,12 @@ namespace CellexalVR.AnalysisLogic
     /// This class handles part of the point selection logics. 
     /// It divides a graph into octants and stores data in these octants so it knows which data to look for when a users selection tool is in a certain part of the graph.
     /// </summary>
-    public class OctantSystem : SystemBase
+    public partial class OctantSystem : SystemBase
     {
         public const int octantYMultiplier = 1000;
         public const int octantZMultiplier = 100;
         public const int octantCellSize = 1;
-        public static List<NativeMultiHashMap<int, OctantData>> quadrantMultiHashMaps;
+        public static List<NativeParallelMultiHashMap<int, OctantData>> quadrantMultiHashMaps;
 
         public List<Transform> graphParentTransforms = new List<Transform>();
 
@@ -60,11 +60,11 @@ namespace CellexalVR.AnalysisLogic
         /// <param name="octantMultiHashMap">The hashmap containing all the octant data components of the graph.</param>
         /// <param name="hashMapKey">The octant key.</param>
         /// <returns></returns>
-        public static int GetEntityCountInHashMap(NativeMultiHashMap<int, OctantData> octantMultiHashMap,
+        public static int GetEntityCountInHashMap(NativeParallelMultiHashMap<int, OctantData> octantMultiHashMap,
             int hashMapKey)
         {
             OctantData quadrantData;
-            NativeMultiHashMapIterator<int> nativeMultiHashMapIterator;
+            NativeParallelMultiHashMapIterator<int> nativeMultiHashMapIterator;
             int count = 0;
             if (octantMultiHashMap.TryGetFirstValue(hashMapKey, out quadrantData, out nativeMultiHashMapIterator))
             {
@@ -81,12 +81,12 @@ namespace CellexalVR.AnalysisLogic
         /// Sets the references between the points and their position and to which octant it belongs to.
         /// </summary>
         [BurstCompile]
-        private struct SetOctantDataHashMapJob : IJobForEachWithEntity<LocalToWorld, Point>
+        private partial struct SetOctantDataHashMapJob : IJobEntity
         {
-            public NativeMultiHashMap<int, OctantData>.ParallelWriter octantMultiHashMap;
+            public NativeParallelMultiHashMap<int, OctantData>.ParallelWriter octantMultiHashMap;
             public int id;
 
-            public void Execute(Entity entity, int index, ref LocalToWorld localToWorld,
+            public void Execute(ref LocalToWorld localToWorld,
                 ref Point point)
             {
                 if (point.parentID != id) return;
@@ -111,7 +111,7 @@ namespace CellexalVR.AnalysisLogic
 
         protected override void OnCreate()
         {
-            quadrantMultiHashMaps = new List<NativeMultiHashMap<int, OctantData>>();
+            quadrantMultiHashMaps = new List<NativeParallelMultiHashMap<int, OctantData>>();
             base.OnCreate();
         }
 
@@ -133,7 +133,7 @@ namespace CellexalVR.AnalysisLogic
         [BurstCompile]
         public void SetHashMap(int id)
         {
-            NativeMultiHashMap<int, OctantData> octantMultiHashMap = new NativeMultiHashMap<int, OctantData>(0, Allocator.Persistent);
+            NativeParallelMultiHashMap<int, OctantData> octantMultiHashMap = new NativeParallelMultiHashMap<int, OctantData>(0, Allocator.Persistent);
             quadrantMultiHashMaps.Add(octantMultiHashMap);
             EntityQuery entityQuery = GetEntityQuery(typeof(Point), typeof(LocalToWorld));
             octantMultiHashMap.Clear();

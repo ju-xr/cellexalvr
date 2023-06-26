@@ -60,7 +60,7 @@
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     padding-left: 10px;
-    -unity-font: resource('StyleSheets/Samples_UnityDefaultRuntimeTheme');
+    -unity-font: resource('StyleSheets/UnityDefaultRuntimeTheme');
     -unity-font-definition: none;
     -unity-font-style: normal;
     font-size: 18px;

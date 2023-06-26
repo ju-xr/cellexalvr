@@ -1733,19 +1733,19 @@ namespace CellexalVR.Multiuser
         public void RecieveMessageSliceGraphAutomatic(int pcID, int axis, int nrOfSlices)
         {
             GraphSlice slice = PointCloudGenerator.instance.pointClouds[pcID].GetComponent<GraphSlice>();
-            StartCoroutine(slice.SliceAxis(axis, World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<SliceGraphSystem>().GetPoints(pcID), nrOfSlices));
+            StartCoroutine(slice.SliceAxis(axis, World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<SliceGraphSystem>().GetPoints(pcID), nrOfSlices));
         }
 
         [PunRPC]
         public void RecieveMessageSliceGraphManual(int pcID, Vector3 planeNormal, Vector3 planePos)
         {
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<SliceGraphSystem>().Slice(pcID, planeNormal, planePos);
+            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<SliceGraphSystem>().Slice(pcID, planeNormal, planePos);
         }
 
         [PunRPC]
         public void RecieveMessageSliceGraphFromSelection(int pcID)
         {
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<SliceGraphSystem>().SliceFromSelection(pcID);
+            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<SliceGraphSystem>().SliceFromSelection(pcID);
         }
 
         [PunRPC]

@@ -21,7 +21,7 @@ namespace CellexalVR.Spatial
     /// Main class to handle slicing of graphs.
     /// Slicing means dividing up the graph into two or more new graphs that can be interacted with individually.
     /// </summary>
-    public class SliceGraphSystem : SystemBase
+    public partial class SliceGraphSystem : SystemBase
     {
         // private Slicer slicer;
         private EndSimulationEntityCommandBufferSystem ecbSystem;
@@ -51,8 +51,8 @@ namespace CellexalVR.Spatial
         protected override void OnCreate()
         {
             base.OnCreate();
-            quadrantSystem = World.GetOrCreateSystem<OctantSystem>();
-            ecbSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+            quadrantSystem = World.GetOrCreateSystemManaged<OctantSystem>();
+            ecbSystem = World.GetOrCreateSystemManaged<EndSimulationEntityCommandBufferSystem>();
             query = GetEntityQuery(typeof(Point));
             slicer = GameObject.Find("SlicePlane");
         }
@@ -77,7 +77,7 @@ namespace CellexalVR.Spatial
             int entityCount = query.CalculateEntityCount();
             NativeArray<bool> move = new NativeArray<bool>(entityCount, Allocator.TempJob);
             JobHandle jobHandle = Entities.WithAll<Point>().WithStoreEntityQueryInField(ref query).ForEach(
-                (Entity entity, int entityInQueryIndex, ref LocalToWorld localToWorld, ref Point point, ref Translation translation) =>
+                (Entity entity, int entityInQueryIndex, ref LocalToWorld localToWorld, ref Point point) =>
                 {
                     if (point.parentID != graphNr && point.orgParentID != graphNr) return;
                     float side = math.dot(localPlaneNorm, (point.offset - localPlanePos));
@@ -103,7 +103,7 @@ namespace CellexalVR.Spatial
             int entityCount = query.CalculateEntityCount();
             NativeArray<bool> move = new NativeArray<bool>(entityCount, Allocator.TempJob);
             JobHandle jobHandle = Entities.WithAll<Point>().WithStoreEntityQueryInField(ref query).ForEach(
-                (Entity entity, int entityInQueryIndex, ref LocalToWorld localToWorld, ref Point point, ref Translation translation) =>
+                (Entity entity, int entityInQueryIndex, ref LocalToWorld localToWorld, ref Point point) =>
                 {
                     if (point.parentID != graphNr && point.orgParentID != graphNr) return;
                     move[entityInQueryIndex] = colorArray[entityInQueryIndex].a > 0.9f;
