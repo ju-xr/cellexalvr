@@ -5,6 +5,9 @@ using UnityEngine;
 using Vuplex.WebView;
 using TMPro;
 using CellexalVR.Interaction;
+using CellexalVR.General;
+using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class FullCanvasWebBrowserPrefab : MonoBehaviour
 {
@@ -17,11 +20,19 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
     // private fields for this script
     private IWithPopups webViewWithPopups;
     private WebManager webManagerScript;
+    private ReferenceManager referenceManager;
+    private XRGrabInteractable interactable;
 
     async void Start()
     {
+        // grab the reference manager
+        referenceManager = GameObject.Find("InputReader").GetComponent<ReferenceManager>();
+
         // find the web manager script for adding other windows
         webManagerScript = GameObject.Find("WebManager").GetComponent<WebManager>();
+
+        // grab the interactable script from this prefab for sending messages to other clients on position
+        interactable = GetComponent<XRGrabInteractable>();
 
         // Jim - attempting to create a CanvasWebViewPrefab for the controls
         _controlsWebViewPrefab.NativeOnScreenKeyboardEnabled = false;
@@ -94,6 +105,10 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
                 popupPrefab.Destroy();
             };*/
         };
+
+        // testing to see if I can get input to work manually
+        CellexalEvents.RightTriggerClick.AddListener(OnTriggerClick);
+        CellexalEvents.RightTriggerUp.AddListener(OnTriggerUp);
     }
 
     /// <summary>
@@ -140,6 +155,15 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
 
     } // end CloseWindow
 
+    private void Update()
+    {
+        // Open XR - update other clients
+        if (interactable.isSelected)
+        {
+            referenceManager.multiuserMessageSender.SendMessageMoveBrowser(transform.localPosition, transform.localRotation, transform.localScale);
+        }
+    }
+
     async void _refreshBackForwardState()
     {
         // Get the main webview's back / forward state and then post a message
@@ -177,6 +201,70 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
             //var serializedMessage = $"{{ \"type\": \"SET_URL\", \"url\": \"{url}\" }}";
             urlInputField.text = url;
             //_controlsWebViewPrefab.WebView.PostMessage(serializedMessage);
+        }
+    }
+
+    private Vector2 GetScreenCoords()
+    {
+        RaycastHit hit;
+        Vector2 pixelUV = Vector2.zero;
+
+        // if we didn't hit the general area of the window, return negative values
+        if (!Physics.Raycast(referenceManager.rightLaser.transform.position, referenceManager.rightLaser.transform.forward, out hit, 10f))
+        {
+            pixelUV = new Vector2(-1f, -1f);
+        }
+        else
+        {
+            // attempting to use the raw image and raycast position to get the coordinates instead of mesh collider
+            GameObject webView = _canvasWebViewPrefab.gameObject.GetNamedChild("CanvasWebViewPrefabView");
+            RawImage webViewImage = webView.GetComponent<RawImage>();
+            RectTransform rt = webViewImage.rectTransform;
+            Vector3 hitScreenCoord = rt.InverseTransformPoint(hit.point);
+
+            bool inside = (hitScreenCoord.x >= 0f) && (hitScreenCoord.x <= rt.rect.width) &&
+                          (hitScreenCoord.y >= 0f) && (hitScreenCoord.y <= rt.rect.height);
+
+            if (inside)
+            {
+                pixelUV = hitScreenCoord;
+
+                // reverse y
+                pixelUV.y = rt.rect.height - pixelUV.y;
+            }
+            else
+            {
+                pixelUV = new Vector2(-1f, -1f);
+            }
+        }
+
+        return pixelUV;
+    }
+
+    void OnTriggerClick()
+    {
+        //if (_mainEngine.Initialized)
+        {
+            Vector2 pixelUV = GetScreenCoords();
+
+            if (pixelUV.x > 0)
+            {
+                _canvasWebViewPrefab.WebView.Click((int)pixelUV.x, (int)pixelUV.y);
+            }
+        }
+
+    }
+
+    void OnTriggerUp()
+    {
+        //if (_mainEngine.Initialized)
+        {
+            Vector2 pixelUV = GetScreenCoords();
+
+            if (pixelUV.x > 0)
+            {
+                //SendMouseButtonEvent((int)pixelUV.x, (int)pixelUV.y, MouseButton.Left, MouseEventType.ButtonUp);
+            }
         }
     }
 

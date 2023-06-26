@@ -23,7 +23,8 @@ namespace CellexalVR.Menu.Buttons.Tools
 
         protected override ControllerModelSwitcher.Model ControllerModel
         {
-            get { return ControllerModelSwitcher.Model.WebBrowser; }
+            //get { return ControllerModelSwitcher.Model.WebBrowser; }
+            get { return ControllerModelSwitcher.Model.TwoLasers; }
         }
 
         public override void Click()
@@ -32,7 +33,7 @@ namespace CellexalVR.Menu.Buttons.Tools
             referenceManager.multiuserMessageSender.SendMessageActivateBrowser(toolActivated);
             referenceManager.webBrowser.GetComponent<WebManager>().SetBrowserActive(toolActivated);
             referenceManager.webBrowser.GetComponent<WebManager>().SetVisible(toolActivated);
-            CellexalLog.Log("Web client should start now!");
+            //CellexalLog.Log("Web client should start now!");
             //Debug.Log("Web client should start now!");
 
         }
