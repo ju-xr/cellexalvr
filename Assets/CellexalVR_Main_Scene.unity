@@ -1546,6 +1546,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   browserWindowPrefab: {fileID: 3412222623029700255, guid: 201d527a26da92242a2033640203a1c8,
     type: 3}
+  popoutWindowPrefab: {fileID: 6434713638699335346, guid: ed663eaf72af82b46887f9ef0e64e9ba,
+    type: 3}
   output: {fileID: 1479088294}
   isVisible: 1
   referenceManager: {fileID: 1319570383771400436}
@@ -1932,6 +1934,10 @@ PrefabInstance:
       propertyPath: referenceManager
       value: 
       objectReference: {fileID: 1319570383771400436}
+    - target: {fileID: 1554578205, guid: 4d53d0f4ffe841e44a282ef3668be846, type: 3}
+      propertyPath: m_HitClosestOnly
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1638506013, guid: 4d53d0f4ffe841e44a282ef3668be846, type: 3}
       propertyPath: referenceManager
       value: 
@@ -1951,16 +1957,41 @@ PrefabInstance:
       propertyPath: referenceManager
       value: 
       objectReference: {fileID: 1319570383771400436}
+    - target: {fileID: 8166409086950462989, guid: 4d53d0f4ffe841e44a282ef3668be846,
+        type: 3}
+      propertyPath: m_DirectionalAnchorRotationAction.m_Action.m_Id
+      value: 2f9286b1-b60b-4289-9a31-2176144e6d0b
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166409086950462989, guid: 4d53d0f4ffe841e44a282ef3668be846,
+        type: 3}
+      propertyPath: m_DirectionalAnchorRotationAction.m_Action.m_Name
+      value: Directional Anchor Rotation
+      objectReference: {fileID: 0}
     - target: {fileID: 8166409087035089332, guid: 4d53d0f4ffe841e44a282ef3668be846,
         type: 3}
       propertyPath: referenceManager
       value: 
       objectReference: {fileID: 1319570383771400436}
+    - target: {fileID: 8166409087810030254, guid: 4d53d0f4ffe841e44a282ef3668be846,
+        type: 3}
+      propertyPath: m_DirectionalAnchorRotationAction.m_Action.m_Id
+      value: be8a4b8e-c7d6-4999-9a17-e3d37e2b7284
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166409087810030254, guid: 4d53d0f4ffe841e44a282ef3668be846,
+        type: 3}
+      propertyPath: m_DirectionalAnchorRotationAction.m_Action.m_Name
+      value: Directional Anchor Rotation
+      objectReference: {fileID: 0}
     - target: {fileID: 8166409087810030255, guid: 4d53d0f4ffe841e44a282ef3668be846,
         type: 3}
       propertyPath: referenceManager
       value: 
       objectReference: {fileID: 1319570383771400436}
+    - target: {fileID: 8166409087826872789, guid: 4d53d0f4ffe841e44a282ef3668be846,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8166409087945416331, guid: 4d53d0f4ffe841e44a282ef3668be846,
         type: 3}
       propertyPath: m_Name

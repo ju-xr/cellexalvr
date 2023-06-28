@@ -16,15 +16,14 @@ namespace CellexalVR.Interaction
         public const string default_url = "https://datashare.molbiol.ox.ac.uk/public/project/Wellcome_Discovery/sergeant/pbmc1k";
         [Header("The prefab for all browser window instances")]
         [SerializeField] GameObject browserWindowPrefab;
+        [SerializeField] GameObject popoutWindowPrefab;
 
-        //public SimpleWebBrowser.WebBrowser webBrowser;
         public TMPro.TextMeshPro output;
         public bool isVisible;
         public ReferenceManager referenceManager;
 
-        private List<GameObject> browserWindows;
-        //private bool firstActivated;
-        //private XRGrabInteractable interactable;
+        private Dictionary<int, GameObject> browserWindows;
+        private int lastBrowserID = 0;
 
         private void OnValidate()
         {
@@ -34,7 +33,6 @@ namespace CellexalVR.Interaction
             }
         }
 
-
         // Use this for initialization
         void Start()
         {
@@ -43,11 +41,10 @@ namespace CellexalVR.Interaction
             Web.SetUserAgent(false);
 
             //SetVisible(false);
-            //interactable = GetComponent<XRGrabInteractable>();
 
             // set up a list to store the browser windows
             // TODO - will need to have the browsers remove themselves with a method
-            browserWindows = new List<GameObject>();
+            browserWindows = new Dictionary<int, GameObject>();
         }
 
         /// <summary>
@@ -56,7 +53,7 @@ namespace CellexalVR.Interaction
         public GameObject CreateNewWindow(Transform browserTransform, string url)
         {
             Vector3 newPos = browserTransform.position;
-            newPos.z += 0.01f;
+            newPos.z -= 0.01f;
             GameObject newWindow = Instantiate(browserWindowPrefab, newPos, browserTransform.rotation);
 
             // set up the initial url to see if it works without loading
@@ -65,19 +62,50 @@ namespace CellexalVR.Interaction
             // need to set the camera of the canvas object for this window
             newWindow.GetComponent<Canvas>().worldCamera = Camera.main;
 
-            browserWindows.Add(newWindow);
+            newWindow.GetComponent<FullCanvasWebBrowserPrefab>().browserID = lastBrowserID;
+            browserWindows.Add(lastBrowserID++, newWindow);
             return newWindow;
 
         } // end CreateNewWindow
 
-        /*private void Update()
+        /// <summary>
+        /// Creates a new browser window relative to the window creating it
+        /// </summary>
+        public GameObject CreatePopOutWindow(Transform browserTransform, IWebView webView)
         {
-            // Open XR
-            if (interactable.isSelected)
-            {
-                referenceManager.multiuserMessageSender.SendMessageMoveBrowser(transform.localPosition, transform.localRotation, transform.localScale);
-            }
-        }*/
+            // set the position to be just in front of the last main window
+            Vector3 newPos = browserTransform.position;
+            newPos.z -= 0.01f;
+            GameObject newWindow = Instantiate(popoutWindowPrefab, newPos, browserTransform.rotation);
+
+            // need to set the camera of the canvas object for this window
+            newWindow.GetComponent<Canvas>().worldCamera = Camera.main;
+
+            // set up the pop out to look back at the previous web view
+            CanvasWebViewPrefab popupPrefab =
+                newWindow.GetNamedChild("CanvasMainWindow").GetComponent<CanvasWebViewPrefab>();
+            popupPrefab.SetWebViewForInitialization(webView);
+
+            // store the object so it can be set to invisible if the browser is turned off
+            newWindow.GetComponent<FullCanvasWebBrowserPrefab>().browserID = lastBrowserID;
+            browserWindows.Add(lastBrowserID++, newWindow);
+            return newWindow;
+
+        } // end CreateNewWindow
+
+        /// <summary>
+        /// Removes the browser window from the list of game objects being tracked by the browser manager
+        /// </summary>
+        /// <param name="browserWindowToRemove">The browser window to remove from the scene</param>
+        public void RemoveBrowserWindowFromScene(GameObject browserWindowToRemove)
+        {
+            // remove the game object from browser list
+            browserWindows.Remove(browserWindowToRemove.GetComponent<FullCanvasWebBrowserPrefab>().browserID);
+
+            // Destroy the parent browser object which will destroy all the child objects as well
+            Destroy(browserWindowToRemove);
+
+        } // end RemoveBrowserWindowFromScene
 
         // TODO: Update this to use a different output text and use 3D Web View keyboard
         public void EnterKey()
@@ -94,18 +122,11 @@ namespace CellexalVR.Interaction
 
         public void SetBrowserActive(bool active)
         {
-            //if (!firstActivated && !webBrowser.gameObject.activeInHierarchy)
-            //if (!firstActivated && !gameObject.activeInHierarchy)
-            if (browserWindows.Count <= 0)
+            if (active && (browserWindows.Count <= 0))
             {
-                //webBrowser.gameObject.SetActive(active);
-                //gameObject.SetActive(active);
-
                 // create a new window here
                 CreateNewWindow(gameObject.transform, default_url);
                 //GetComponentInChildren<ReportListGenerator>().GenerateList();
-
-                //firstActivated = true;
             }
 
             //SetVisible(active);
@@ -124,7 +145,6 @@ namespace CellexalVR.Interaction
             }*/
 
             isVisible = visible;
-            //webBrowser.enabled = visible;
         }
 
     }

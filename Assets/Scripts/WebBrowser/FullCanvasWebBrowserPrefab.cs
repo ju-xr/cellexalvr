@@ -16,12 +16,16 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
     [SerializeField] CanvasWebViewPrefab _canvasWebViewPrefab;
     [SerializeField] CanvasKeyboard _keyboard;
     [SerializeField] TMP_InputField urlInputField;
+    [SerializeField] Canvas canvas;
+
+    // testing a key system to know what browser buttons are being invoked
+    public int browserID;
 
     // private fields for this script
     private IWithPopups webViewWithPopups;
-    private WebManager webManagerScript;
-    private ReferenceManager referenceManager;
-    private XRGrabInteractable interactable;
+    protected WebManager webManagerScript;
+    protected ReferenceManager referenceManager;
+    protected XRGrabInteractable interactable;
 
     async void Start()
     {
@@ -71,8 +75,6 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
             _controlsWebViewPrefab.SetCutoutRect(new Rect(0, 0, 1, 1));
         }
 
-    // Jim - attempting to add pop-out windows (this may need to move around)
-
         // After the prefab has initialized, you can use the IWithPopups API via its WebView property.
         // https://developer.vuplex.com/webview/IWithPopups
         webViewWithPopups = _canvasWebViewPrefab.WebView as IWithPopups;
@@ -91,19 +93,17 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
             Debug.Log("Popup opened with URL: " + eventArgs.Url);
 
             // using the web manager code to instatiate instead of doing it here
-            GameObject popupObject = webManagerScript.CreateNewWindow(gameObject.transform, eventArgs.Url);
+            GameObject popupObject = webManagerScript.CreatePopOutWindow(gameObject.transform, eventArgs.WebView);
             CanvasWebViewPrefab popupPrefab = 
                 popupObject.GetNamedChild("CanvasMainWindow").GetComponent<CanvasWebViewPrefab>();
-            /*var popupPrefab = CanvasWebViewPrefab.Instantiate(eventArgs.WebView);
-            popupPrefab.Resolution = _canvasWebViewPrefab.Resolution;
-            //popupPrefab.transform.SetParent(canvas.transform, false);*/
+            //popupPrefab.transform.SetParent(canvas.transform, false);
 
             // This may not be necessary
             await popupPrefab.WaitUntilInitialized();
-            /*popupPrefab.WebView.CloseRequested += (popupWebView, closeEventArgs) => {
+            popupPrefab.WebView.CloseRequested += (popupWebView, closeEventArgs) => {
                 Debug.Log("Closing the popup");
                 popupPrefab.Destroy();
-            };*/
+            };
         };
 
         // testing to see if I can get input to work manually
@@ -144,18 +144,24 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
     /// </summary>
     public void CloseWindow()
     {
-        // clean up the window resources for this window
-        // (may be overkill but would rather have it cleaned up)
-        _controlsWebViewPrefab.WebView.Dispose();
-        _canvasWebViewPrefab.WebView.Dispose();
-        _keyboard.WebViewPrefab.WebView.Dispose();
+        // only create a new window if hte web manager exists
+        if (webManagerScript != null)
+        {
+            // send a request to close the window (mainly for popouts)
+            IWebView webView = 
+                gameObject.GetNamedChild("CanvasMainWindow").GetComponent<CanvasWebViewPrefab>().WebView;
 
-        // Destroy the parent object which will destroy all the child objects as well
-        Destroy(gameObject);
+            webView.ExecuteJavaScript("window.close()", null);
+            webManagerScript.RemoveBrowserWindowFromScene(gameObject);
+        }
+        else
+        {
+            Debug.Log("No web manager, so can't add a new browser window");
+        }
 
     } // end CloseWindow
 
-    private void Update()
+    protected void Update()
     {
         // Open XR - update other clients
         if (interactable.isSelected)
@@ -204,7 +210,7 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
         }
     }
 
-    private Vector2 GetScreenCoords()
+    protected Vector2 GetScreenCoords()
     {
         RaycastHit hit;
         Vector2 pixelUV = Vector2.zero;
@@ -241,21 +247,18 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
         return pixelUV;
     }
 
-    void OnTriggerClick()
+    protected void OnTriggerClick()
     {
-        //if (_mainEngine.Initialized)
-        {
-            Vector2 pixelUV = GetScreenCoords();
+        Vector2 pixelUV = GetScreenCoords();
 
-            if (pixelUV.x > 0)
-            {
-                _canvasWebViewPrefab.WebView.Click((int)pixelUV.x, (int)pixelUV.y);
-            }
+        if (pixelUV.x > 0)
+        {
+            _canvasWebViewPrefab.WebView.Click((int)pixelUV.x, (int)pixelUV.y);
         }
 
     }
 
-    void OnTriggerUp()
+    protected void OnTriggerUp()
     {
         //if (_mainEngine.Initialized)
         {
