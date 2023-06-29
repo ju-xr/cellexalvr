@@ -9,7 +9,7 @@ using CellexalVR.General;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class FullCanvasWebBrowserPrefab : MonoBehaviour
+public class FullCanvasWebBrowserManager : MonoBehaviour
 {
     // Canvas prefabs in the resource folder for Vulpex WebView
     [SerializeField] CanvasWebViewPrefab _controlsWebViewPrefab;
@@ -301,13 +301,32 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
         // - The url input box
         if (!eventTriggered)
         {
+            GameObject urlInputField = gameObject.GetNamedChild("URLField");
 
+            if (urlInputField != null)
+            {
+                Vector2 pixelUV = GetScreenCoords(urlInputField.GetComponent<RectTransform>());
+
+                if (pixelUV.x > 0)
+                {
+                    TMP_InputField urlInput = urlInputField.GetComponent<TMP_InputField>();
+                    urlInput.ActivateInputField();
+                    eventTriggered = true;
+                }
+            }
         }
 
         // Go through the keyboard section next
         if (!eventTriggered && (_keyboard != null))
         {
             // - The keyboard area
+            Vector2 pixelUV = GetScreenCoords(_keyboard.GetComponent<RectTransform>());
+
+            if (pixelUV.x > 0)
+            {
+                _keyboard.WebViewPrefab.WebView.Click((int)pixelUV.x, (int)pixelUV.y); ;
+                eventTriggered = true;
+            }
         }
 
     } // end OnTriggerClick

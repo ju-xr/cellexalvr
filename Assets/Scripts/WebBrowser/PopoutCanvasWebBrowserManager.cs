@@ -5,7 +5,7 @@ using UnityEngine;
 using CellexalVR.General;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class PopoutWindowController : FullCanvasWebBrowserPrefab
+public class PopoutCanvasWebBrowserManager : FullCanvasWebBrowserManager
 {
     // This class only uses a small subset of the FullCanvasWebBrowserPrefab
     //  - the controls for clicking on the main window of the popout and the close button

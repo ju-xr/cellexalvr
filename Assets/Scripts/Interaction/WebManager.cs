@@ -13,7 +13,8 @@ namespace CellexalVR.Interaction
     /// </summary>
     public class WebManager : MonoBehaviour
     {
-        public const string default_url = "https://datashare.molbiol.ox.ac.uk/public/project/Wellcome_Discovery/sergeant/pbmc1k";
+        public const string default_url = "https://mdv.molbiol.ox.ac.uk/projects";
+        //"https://datashare.molbiol.ox.ac.uk/public/project/Wellcome_Discovery/sergeant/pbmc1k";
         [Header("The prefab for all browser window instances")]
         [SerializeField] GameObject browserWindowPrefab;
         [SerializeField] GameObject popoutWindowPrefab;
@@ -62,7 +63,7 @@ namespace CellexalVR.Interaction
             // need to set the camera of the canvas object for this window
             newWindow.GetComponent<Canvas>().worldCamera = Camera.main;
 
-            newWindow.GetComponent<FullCanvasWebBrowserPrefab>().browserID = lastBrowserID;
+            newWindow.GetComponent<FullCanvasWebBrowserManager>().browserID = lastBrowserID;
             browserWindows.Add(lastBrowserID++, newWindow);
             return newWindow;
 
@@ -87,7 +88,7 @@ namespace CellexalVR.Interaction
             popupPrefab.SetWebViewForInitialization(webView);
 
             // store the object so it can be set to invisible if the browser is turned off
-            newWindow.GetComponent<FullCanvasWebBrowserPrefab>().browserID = lastBrowserID;
+            newWindow.GetComponent<FullCanvasWebBrowserManager>().browserID = lastBrowserID;
             browserWindows.Add(lastBrowserID++, newWindow);
             return newWindow;
 
@@ -100,7 +101,7 @@ namespace CellexalVR.Interaction
         public void RemoveBrowserWindowFromScene(GameObject browserWindowToRemove)
         {
             // remove the game object from browser list
-            browserWindows.Remove(browserWindowToRemove.GetComponent<FullCanvasWebBrowserPrefab>().browserID);
+            browserWindows.Remove(browserWindowToRemove.GetComponent<FullCanvasWebBrowserManager>().browserID);
 
             // Destroy the parent browser object which will destroy all the child objects as well
             Destroy(browserWindowToRemove);

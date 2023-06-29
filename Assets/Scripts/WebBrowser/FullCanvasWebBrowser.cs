@@ -4,6 +4,9 @@ using Unity.XR.CoreUtils;
 using UnityEngine;
 using Vuplex.WebView;
 
+/// <summary>
+/// Not used, but here for reference! If we were to create a canvas browser without a prefab
+/// </summary>
 public class FullCanvasWebBrowser : MonoBehaviour
 {
     // Canvas prefabs in the resource folder for Vulpex WebView
