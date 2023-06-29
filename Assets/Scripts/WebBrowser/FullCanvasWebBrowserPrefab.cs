@@ -16,7 +16,7 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
     [SerializeField] CanvasWebViewPrefab _canvasWebViewPrefab;
     [SerializeField] CanvasKeyboard _keyboard;
     [SerializeField] TMP_InputField urlInputField;
-    [SerializeField] Canvas canvas;
+    //[SerializeField] Canvas canvas;
 
     // testing a key system to know what browser buttons are being invoked
     public int browserID;
@@ -102,7 +102,8 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
             await popupPrefab.WaitUntilInitialized();
             popupPrefab.WebView.CloseRequested += (popupWebView, closeEventArgs) => {
                 Debug.Log("Closing the popup");
-                popupPrefab.Destroy();
+                //popupPrefab.Destroy();
+                CloseWindow();
             };
         };
 
@@ -127,7 +128,7 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
     /// </summary>
     public void CreateNewWindow()
     {
-        // only create a new window if hte web manager exists
+        // only create a new window if the web manager exists
         if (webManagerScript != null)
         {
             webManagerScript.CreateNewWindow(gameObject.transform, "https://www.google.com/");
@@ -144,7 +145,7 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
     /// </summary>
     public void CloseWindow()
     {
-        // only create a new window if hte web manager exists
+        // only close the window if the web manager exists
         if (webManagerScript != null)
         {
             // send a request to close the window (mainly for popouts)
@@ -210,10 +211,15 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
         }
     }
 
-    protected Vector2 GetScreenCoords()
+    /// <summary>
+    /// Gets the screen coordinates for a raycast hit from the right controller and the canvas object transform
+    /// </summary>
+    /// <param name="rt">the rect transform of the object needing to be checked</param>
+    /// <returns>the canvas position within the rect transform if it was hit, (-1,-1) if not</returns>
+    protected Vector2 GetScreenCoords(RectTransform rt)
     {
         RaycastHit hit;
-        Vector2 pixelUV = Vector2.zero;
+        Vector2 pixelUV;
 
         // if we didn't hit the general area of the window, return negative values
         if (!Physics.Raycast(referenceManager.rightLaser.transform.position, referenceManager.rightLaser.transform.forward, out hit, 10f))
@@ -223,9 +229,6 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
         else
         {
             // attempting to use the raw image and raycast position to get the coordinates instead of mesh collider
-            GameObject webView = _canvasWebViewPrefab.gameObject.GetNamedChild("CanvasWebViewPrefabView");
-            RawImage webViewImage = webView.GetComponent<RawImage>();
-            RectTransform rt = webViewImage.rectTransform;
             Vector3 hitScreenCoord = rt.InverseTransformPoint(hit.point);
 
             bool inside = (hitScreenCoord.x >= 0f) && (hitScreenCoord.x <= rt.rect.width) &&
@@ -245,31 +248,138 @@ public class FullCanvasWebBrowserPrefab : MonoBehaviour
         }
 
         return pixelUV;
-    }
 
+    } // end GetScreenCoords
+
+    /// <summary>
+    /// Perfoms the on trigger click event for a full canvas web browser object
+    /// </summary>
     protected void OnTriggerClick()
     {
-        Vector2 pixelUV = GetScreenCoords();
+        // need to add a way to check for each area of the prefab:
+        bool eventTriggered = false;
 
-        if (pixelUV.x > 0)
+        // - The main window (currently done)
+        if (_canvasWebViewPrefab != null)
         {
-            _canvasWebViewPrefab.WebView.Click((int)pixelUV.x, (int)pixelUV.y);
+            Vector2 pixelUV = CheckTriggerEventOnCanvasRawImage(_canvasWebViewPrefab);
+
+            if (pixelUV.x > 0)
+            {
+                _canvasWebViewPrefab.WebView.Click((int)pixelUV.x, (int)pixelUV.y);
+                eventTriggered = true;
+            }
         }
 
-    }
+        // Go through the controls section next
+        if (!eventTriggered && (_controlsWebViewPrefab != null))
+        {
+            // - The forward and back buttons (currently on a canvas image and using JS
+            Vector2 pixelUV = CheckTriggerEventOnCanvasRawImage(_controlsWebViewPrefab);
+
+            if (pixelUV.x > 0)
+            {
+                _controlsWebViewPrefab.WebView.Click((int)pixelUV.x, (int)pixelUV.y);
+                eventTriggered = true;
+            }
+        }
+
+        // - Check the close window button (to fix the issue of them getting multiply clicked)
+        if (!eventTriggered)
+        {
+            // get the rect transform for the close button
+            eventTriggered = IsCanvasButtonPressed(gameObject.GetNamedChild("CloseWindowButton"));
+        }
+
+        // - Check the add window button (to fix the issue of them getting multiply clicked)
+        if (!eventTriggered)
+        {
+            // get the rect transform for the close button
+            eventTriggered = IsCanvasButtonPressed(gameObject.GetNamedChild("AddWindowButton"));
+        }
+
+        // - The url input box
+        if (!eventTriggered)
+        {
+
+        }
+
+        // Go through the keyboard section next
+        if (!eventTriggered && (_keyboard != null))
+        {
+            // - The keyboard area
+        }
+
+    } // end OnTriggerClick
 
     protected void OnTriggerUp()
     {
-        //if (_mainEngine.Initialized)
+        // need to add a way to check for each area of the prefab:
+        bool eventTriggered = false;
+        Vector2 pixelUV;
+
+        // - The main window (currently done)
+        if (_canvasWebViewPrefab != null)
         {
-            Vector2 pixelUV = GetScreenCoords();
+            pixelUV = CheckTriggerEventOnCanvasRawImage(_canvasWebViewPrefab);
 
             if (pixelUV.x > 0)
             {
                 //SendMouseButtonEvent((int)pixelUV.x, (int)pixelUV.y, MouseButton.Left, MouseEventType.ButtonUp);
+                eventTriggered = true;
             }
         }
-    }
+
+        // Go through the controls section next
+        if (!eventTriggered && (_controlsWebViewPrefab != null))
+        {
+            // - The forward and back buttons
+            // - The add and close window buttons (to fix the issue of them getting multiply clicked
+            // - The url input box
+        }
+
+        // Go through the keyboard section next
+        if (!eventTriggered && (_keyboard != null))
+        {
+            // - The keyboard area
+        }
+
+    } // end OnTriggerUp
+
+    /// <summary>
+    /// Helper function to check canvases with raw images to see if they've been hit by a raycast
+    /// </summary>
+    /// <param name="canvasToCheck">The canvas to check against the raycast</param>
+    /// <returns>the canvas position within the rect transform if it was hit, (-1,-1) if not</returns>
+    private Vector2 CheckTriggerEventOnCanvasRawImage(CanvasWebViewPrefab canvasToCheck)
+    {
+        GameObject webView = canvasToCheck.gameObject.GetNamedChild("CanvasWebViewPrefabView");
+        RawImage webViewImage = webView.GetComponent<RawImage>();
+        Vector2 pixelUV = GetScreenCoords(webViewImage.rectTransform);
+
+        return pixelUV;
+
+    } // end CheckTriggerEventOnCanvasRawImage
+
+    private bool IsCanvasButtonPressed(GameObject buttonToCheck)
+    {
+        bool eventTriggered = false; 
+        
+        if (buttonToCheck != null)
+        {
+            Vector2 pixelUV = GetScreenCoords(buttonToCheck.GetComponent<RectTransform>());
+
+            if (pixelUV.x > 0)
+            {
+                Button buttonComponent = buttonToCheck.GetComponent<Button>();
+                buttonComponent.onClick.Invoke();
+                eventTriggered = true;
+            }
+        }
+
+        return eventTriggered;
+
+    } // end IsCanvasButtonPressed
 
     const string CONTROLS_HTML = @"
             <!DOCTYPE html>

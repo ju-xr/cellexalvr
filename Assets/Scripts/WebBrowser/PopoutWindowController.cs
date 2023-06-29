@@ -8,9 +8,11 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class PopoutWindowController : FullCanvasWebBrowserPrefab
 {
     // This class only uses a small subset of the FullCanvasWebBrowserPrefab
-    //  - the controls for clicking on the main window of the popout
+    //  - the controls for clicking on the main window of the popout and the close button
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start is called before the first frame update to set up this object
+    /// </summary>
     void Start()
     {
         // grab the reference manager
@@ -26,5 +28,5 @@ public class PopoutWindowController : FullCanvasWebBrowserPrefab
         CellexalEvents.RightTriggerClick.AddListener(OnTriggerClick);
         CellexalEvents.RightTriggerUp.AddListener(OnTriggerUp);
 
-    }
+    } // end Start
 }
