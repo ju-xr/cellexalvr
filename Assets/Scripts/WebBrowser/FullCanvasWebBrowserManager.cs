@@ -21,11 +21,15 @@ public class FullCanvasWebBrowserManager : MonoBehaviour
     // testing a key system to know what browser buttons are being invoked
     public int browserID;
 
-    // private fields for this script
-    private IWithPopups webViewWithPopups;
+    // used by sub-classes
     protected WebManager webManagerScript;
     protected ReferenceManager referenceManager;
     protected XRGrabInteractable interactable;
+
+    // private fields for this script
+    private IWithPopups webViewWithPopups;
+    private Vector2 previousPixelUV;
+    private bool dragging;
 
     async void Start()
     {
@@ -109,7 +113,8 @@ public class FullCanvasWebBrowserManager : MonoBehaviour
 
         // testing to see if I can get input to work manually
         CellexalEvents.RightTriggerClick.AddListener(OnTriggerClick);
-        CellexalEvents.RightTriggerUp.AddListener(OnTriggerUp);
+        CellexalEvents.RightTriggerPressed.AddListener(OnTriggerPressed);
+        CellexalEvents.RightTriggerUp.AddListener(OnTriggerUp); 
     }
 
     /// <summary>
@@ -267,6 +272,8 @@ public class FullCanvasWebBrowserManager : MonoBehaviour
             if (pixelUV.x > 0)
             {
                 _canvasWebViewPrefab.WebView.Click((int)pixelUV.x, (int)pixelUV.y);
+                previousPixelUV = pixelUV;
+                dragging = true;
                 eventTriggered = true;
             }
         }
@@ -301,8 +308,6 @@ public class FullCanvasWebBrowserManager : MonoBehaviour
         // - The url input box
         if (!eventTriggered)
         {
-            GameObject urlInputField = gameObject.GetNamedChild("URLField");
-
             if (urlInputField != null)
             {
                 Vector2 pixelUV = GetScreenCoords(urlInputField.GetComponent<RectTransform>());
@@ -324,46 +329,44 @@ public class FullCanvasWebBrowserManager : MonoBehaviour
 
             if (pixelUV.x > 0)
             {
-                _keyboard.WebViewPrefab.WebView.Click((int)pixelUV.x, (int)pixelUV.y); ;
+                _keyboard.WebViewPrefab.WebView.Click((int)pixelUV.x, (int)pixelUV.y);                 
                 eventTriggered = true;
             }
         }
 
     } // end OnTriggerClick
 
-    protected void OnTriggerUp()
+    /// <summary>
+    /// Used for drag events...
+    /// </summary>
+    protected void OnTriggerPressed()
     {
         // need to add a way to check for each area of the prefab:
-        bool eventTriggered = false;
+        //bool eventTriggered = false;
         Vector2 pixelUV;
 
         // - The main window (currently done)
-        if (_canvasWebViewPrefab != null)
+        if ( (_canvasWebViewPrefab != null) && dragging)
         {
             pixelUV = CheckTriggerEventOnCanvasRawImage(_canvasWebViewPrefab);
 
             if (pixelUV.x > 0)
             {
-                //SendMouseButtonEvent((int)pixelUV.x, (int)pixelUV.y, MouseButton.Left, MouseEventType.ButtonUp);
-                eventTriggered = true;
+                int xChange = (int)previousPixelUV.x - (int)pixelUV.x;
+                int yChange = (int)previousPixelUV.y - (int)pixelUV.y;
+                _canvasWebViewPrefab.WebView.Scroll(xChange, yChange);
+                previousPixelUV = pixelUV;
+                //eventTriggered = true;
             }
         }
 
-        // Go through the controls section next
-        if (!eventTriggered && (_controlsWebViewPrefab != null))
-        {
-            // - The forward and back buttons
-            // - The add and close window buttons (to fix the issue of them getting multiply clicked
-            // - The url input box
-        }
+    } // end OnTriggerPressed
 
-        // Go through the keyboard section next
-        if (!eventTriggered && (_keyboard != null))
-        {
-            // - The keyboard area
-        }
-
-    } // end OnTriggerUp
+    protected void OnTriggerUp() 
+    {
+        dragging = false;
+    
+    }  // end OnTriggerUp
 
     /// <summary>
     /// Helper function to check canvases with raw images to see if they've been hit by a raycast
@@ -399,6 +402,7 @@ public class FullCanvasWebBrowserManager : MonoBehaviour
         return eventTriggered;
 
     } // end IsCanvasButtonPressed
+
 
     const string CONTROLS_HTML = @"
             <!DOCTYPE html>
