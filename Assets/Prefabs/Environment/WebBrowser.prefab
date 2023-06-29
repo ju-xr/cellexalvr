@@ -8582,7 +8582,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e45d71f2d01c1e640b9ac5a251422242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  webBrowser: {fileID: 4543546497919500928}
+  browserWindowPrefab: {fileID: 0}
+  popoutWindowPrefab: {fileID: 0}
   output: {fileID: 4543505820931859838}
   isVisible: 0
   referenceManager: {fileID: 0}
@@ -8773,7 +8774,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4509967207104830628
 Transform:
   m_ObjectHideFlags: 0
@@ -9106,7 +9107,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4432713410589314526}
   - component: {fileID: 4524734352299884740}
-  - component: {fileID: 4535037770284002130}
   - component: {fileID: 4543321844635491464}
   m_Layer: 0
   m_Name: Description Text
@@ -9177,14 +9177,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &4535037770284002130
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4511916239245985780}
-  m_Mesh: {fileID: 0}
 --- !u!114 &4543321844635491464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9208,7 +9200,8 @@ MonoBehaviour:
   m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 44f1fef9f9538ee448393c70fa398ea0, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: -1007923611405979911, guid: 44f1fef9f9538ee448393c70fa398ea0,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -9227,7 +9220,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -9239,9 +9232,9 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
-  m_textAlignment: 258
+  m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
