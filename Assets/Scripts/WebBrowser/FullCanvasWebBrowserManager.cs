@@ -167,6 +167,22 @@ public class FullCanvasWebBrowserManager : MonoBehaviour
 
     } // end CloseWindow
 
+    /// <summary>
+    /// Refreshes the browser window
+    /// </summary>
+    public void RefreshWindow()
+    {
+        IWebView webView =
+            gameObject.GetNamedChild("CanvasMainWindow").GetComponent<CanvasWebViewPrefab>().WebView;
+
+        webView.Reload();
+
+    } // end RefreshWindow
+
+    /// <summary>
+    /// Update the other windows in multi-player
+    /// TODO: Test this to make sure it works, may need more calls for other browser actions
+    /// </summary>
     protected void Update()
     {
         // Open XR - update other clients
@@ -174,8 +190,12 @@ public class FullCanvasWebBrowserManager : MonoBehaviour
         {
             referenceManager.multiuserMessageSender.SendMessageMoveBrowser(transform.localPosition, transform.localRotation, transform.localScale);
         }
-    }
 
+    } // end Update
+
+    /// <summary>
+    /// Refreshes the back and forward button states that are controlled by JAVAScript
+    /// </summary>
     async void _refreshBackForwardState()
     {
         // Get the main webview's back / forward state and then post a message
@@ -184,8 +204,14 @@ public class FullCanvasWebBrowserManager : MonoBehaviour
         var canGoForward = await _canvasWebViewPrefab.WebView.CanGoForward();
         var serializedMessage = $"{{ \"type\": \"SET_BUTTONS\", \"canGoBack\": {canGoBack.ToString().ToLowerInvariant()}, \"canGoForward\": {canGoForward.ToString().ToLowerInvariant()} }}";
         _controlsWebViewPrefab.WebView.PostMessage(serializedMessage);
-    }
 
+    } // end _refreshBackForwardState
+
+    /// <summary>
+    /// Controls messages to the JavaScript control panel, currently only forward and back buttons
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="eventArgs"></param>
     void Controls_MessageEmitted(object sender, EventArgs<string> eventArgs)
     {
         if (eventArgs.Value == "CONTROLS_INITIALIZED")
@@ -204,8 +230,13 @@ public class FullCanvasWebBrowserManager : MonoBehaviour
         {
             _canvasWebViewPrefab.WebView.GoForward();
         }
-    }
 
+    } // end Controls_MessageEmitted
+
+    /// <summary>
+    /// Sets the current URL for this webpage to be displayed in the url input text field if it is updated
+    /// </summary>
+    /// <param name="url">The updated url</param>
     void _setDisplayedUrl(string url)
     {
         if (_controlsWebViewPrefab.WebView != null)
@@ -214,7 +245,8 @@ public class FullCanvasWebBrowserManager : MonoBehaviour
             urlInputField.text = url;
             //_controlsWebViewPrefab.WebView.PostMessage(serializedMessage);
         }
-    }
+
+    } // end _setDisplayedUrl
 
     /// <summary>
     /// Gets the screen coordinates for a raycast hit from the right controller and the canvas object transform
@@ -303,6 +335,13 @@ public class FullCanvasWebBrowserManager : MonoBehaviour
         {
             // get the rect transform for the close button
             eventTriggered = IsCanvasButtonPressed(gameObject.GetNamedChild("AddWindowButton"));
+        }
+
+        // - Check the refresh window button (to fix the issue of them getting multiply clicked)
+        if (!eventTriggered)
+        {
+            // get the rect transform for the close button
+            eventTriggered = IsCanvasButtonPressed(gameObject.GetNamedChild("RefreshWindowButton"));
         }
 
         // - The url input box
