@@ -127,7 +127,6 @@ namespace CellexalVR.Interaction
             {
                 // create a new window here
                 CreateNewWindow(gameObject.transform, default_url);
-                //GetComponentInChildren<ReportListGenerator>().GenerateList();
             }
 
             //SetVisible(active);
@@ -136,16 +135,10 @@ namespace CellexalVR.Interaction
 
         public void SetVisible(bool visible)
         {
-            /*foreach (Renderer r in GetComponentsInChildren<Renderer>())
+            foreach (KeyValuePair<int, GameObject> browserWindow in browserWindows)
             {
-                r.enabled = visible;
+                browserWindow.Value.SetActive(visible);
             }
-            foreach (Collider c in GetComponentsInChildren<Collider>())
-            {
-                c.enabled = visible;
-            }*/
-
-            isVisible = visible;
         }
 
     }
