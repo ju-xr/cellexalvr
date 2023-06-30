@@ -136,7 +136,8 @@ public class FullCanvasWebBrowserManager : MonoBehaviour
         // only create a new window if the web manager exists
         if (webManagerScript != null)
         {
-            webManagerScript.CreateNewWindow(gameObject.transform, "https://www.google.com/");
+            //webManagerScript.CreateNewWindow(gameObject.transform, "https://www.google.com/");
+            webManagerScript.CreateNewWindow(gameObject.transform, urlInputField.text);
         }
         else
         {
