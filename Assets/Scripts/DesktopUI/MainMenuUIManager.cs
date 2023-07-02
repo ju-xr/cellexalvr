@@ -29,6 +29,13 @@ namespace CellexalVR.DesktopUI
         private Button findRscriptButton;
         private Button findScarfScriptButton;
 
+        private void Start()
+        {
+            //SetUsername();
+            //ReferenceManager.instance.spectatorRig.GetComponent<SpectatorController>().MirrorVRView();
+            //gameObject.SetActive(false);
+        }
+
         private void OnEnable()
         {
             var root = GetComponent<UIDocument>().rootVisualElement;
@@ -52,6 +59,9 @@ namespace CellexalVR.DesktopUI
 
             CellexalEvents.ConfigLoaded.AddListener(UpdateRScriptField);
             CellexalEvents.ConfigLoaded.AddListener(UpdateScarfScriptField);
+
+            //ReferenceManager.instance.spectatorRig.GetComponent<SpectatorController>().MirrorVRView();
+
         }
 
         private void UpdateRScriptField()
