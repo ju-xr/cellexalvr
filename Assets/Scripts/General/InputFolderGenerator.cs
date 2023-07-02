@@ -17,6 +17,7 @@ namespace CellexalVR.General
         public GameObject folderPrefab;
         public GameObject sessionFolderPrefab;
         public ReferenceManager referenceManager;
+        public Transform[] point;
 
         private int nfolder = 0;
         private List<string> directories = new List<string>();
@@ -130,8 +131,10 @@ namespace CellexalVR.General
 
                 if (croppedDirectoryName.ToLower().Contains(filter))
                 {
-                    Vector3 heightVector = new Vector3(0f, 1 + nfolder / 6, 0f);
-                    Vector3 position = folderBaseCoords[nfolder % 6] + heightVector;
+                    Vector3 heightVector = new Vector3(0f, 1 + nfolder / 2, 0f);
+                    //Vector3 position = folderBaseCoords[nfolder % 2] + heightVector;
+                    int pnumber = nfolder % 4;
+                    Vector3 position = point[pnumber].position;
                     nfolder++;
                     if (!folderBoxes.ContainsKey(croppedDirectoryName))
                     {
@@ -151,8 +154,8 @@ namespace CellexalVR.General
                     GameObject parent = box.transform.parent.gameObject;
                     parent.SetActive(true);
                     parent.transform.position = position;
-                    parent.transform.LookAt(transform.position + heightVector - new Vector3(0f, 1f, 0f));
-                    parent.transform.Rotate(0, -90f, 0);
+                    //parent.transform.LookAt(transform.position + heightVector - new Vector3(0f, 1f, 0f));
+                    //parent.transform.Rotate(90f, 0f, 0);
 
                 }
                 else
