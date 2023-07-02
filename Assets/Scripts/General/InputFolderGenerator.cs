@@ -138,21 +138,32 @@ namespace CellexalVR.General
                     nfolder++;
                     if (!folderBoxes.ContainsKey(croppedDirectoryName))
                     {
-                        GameObject newFolder = Instantiate(folderPrefab);
-                        newFolder.transform.parent = transform;
-                        CellsToLoad cellsToload = newFolder.GetComponentInChildren<CellsToLoad>();
-                        cellsToload.SavePosition(newFolder.transform);
+    
+                            GameObject newFolder = Instantiate(folderPrefab);
+                            newFolder.transform.parent = transform;
+                            CellsToLoad cellsToload = newFolder.GetComponentInChildren<CellsToLoad>();
+                            cellsToload.SavePosition(newFolder.transform);
 
-                        // Set text on folder box
-                        newFolder.GetComponentInChildren<TextMeshPro>().text = croppedDirectoryName;
-                        cellsToload.Directory = croppedDirectoryName;
-                        newFolder.name = croppedDirectoryName + "_box";
-                        folderBoxes[croppedDirectoryName] = cellsToload;
+                            // Set text on folder box
+                            newFolder.GetComponentInChildren<TextMeshPro>().text = croppedDirectoryName;
+                            cellsToload.Directory = croppedDirectoryName;
+                            newFolder.name = croppedDirectoryName + "_box";
+                            folderBoxes[croppedDirectoryName] = cellsToload;
+                        
                     }
 
                     CellsToLoad box = folderBoxes[croppedDirectoryName];
                     GameObject parent = box.transform.parent.gameObject;
-                    parent.SetActive(true);
+                    if (nfolder <= 4)
+                    {
+                        parent.SetActive(true);
+                    }
+                    else
+                    {
+                        //fridge only 4, control the amount of cells
+                        parent.SetActive(false);
+                    }
+
                     parent.transform.position = position;
                     //parent.transform.LookAt(transform.position + heightVector - new Vector3(0f, 1f, 0f));
                     //parent.transform.Rotate(90f, 0f, 0);
