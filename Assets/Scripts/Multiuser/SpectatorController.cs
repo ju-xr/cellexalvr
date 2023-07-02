@@ -41,7 +41,7 @@ namespace CellexalVR.Multiuser
             //}
 
             //Cursor.lockState = CursorLockMode.Locked;
-            ReferenceManager.instance.headset.gameObject.SetActive(false);
+            //ReferenceManager.instance.headset.gameObject.SetActive(false);
         }
 
         private void Update()
