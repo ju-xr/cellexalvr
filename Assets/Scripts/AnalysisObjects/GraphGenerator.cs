@@ -64,8 +64,10 @@ namespace CellexalVR.AnalysisObjects
 
         private Vector3[] startPositions =
         {
-            new Vector3(-0.2f, 1.1f, -0.95f),
-            new Vector3(-0.9f, 1.1f, -0.4f),
+            new Vector3(2.78f, 0.85f, -0.427f),
+            new Vector3(4.5f, 0.85f, -0.427f),
+            //new Vector3(-0.2f, 1.1f, -0.95f),
+            //new Vector3(-0.9f, 1.1f, -0.4f),
             new Vector3(-0.9f, 1.1f, 0.4f),
             new Vector3(-0.2f, 1.1f, 0.95f),
             new Vector3(0.8f, 1.1f, -0.4f),

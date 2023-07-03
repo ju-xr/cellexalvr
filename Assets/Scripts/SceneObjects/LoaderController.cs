@@ -70,7 +70,7 @@ namespace CellexalVR.SceneObjects
         {
             if (moveLoader)
             {
-                gameObject.transform.position = Vector3.Lerp(startPosition, finalPosition, currentTime / arrivalTime);
+                gameObject.transform.position = Vector3.Lerp(startPosition, finalPosition - new Vector3(0,2,0), currentTime / arrivalTime);
                 currentTime += Time.deltaTime;
                 if (Mathf.Abs(transform.position.y - finalPosition.y) <= 0.005)
                 {
