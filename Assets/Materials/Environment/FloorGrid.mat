@@ -114,7 +114,7 @@ Material:
     - _WaveDuration: 2
     - _WaveMaxRadius: 1
     - _WaveSpeed: 0.8
-    - _WaveStartTime: -1
+    - _WaveStartTime: 0.13102216
     - _WaveThickness: 0.03
     - _ZWrite: 1
     m_Colors:
