@@ -94,7 +94,7 @@ namespace CellexalVR.Interaction
                     angle = dAngle[i];
                 else
                     angle = -dAngle[i];
-                transform.Rotate(Vector3.forward, angle);
+                transform.Rotate(Vector3.forward, angle); //changed from forward
                 yield return null;
             }
 
